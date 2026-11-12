@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Umwewo</title>
+<style>
+:root{--bg:#f3f8f5;--card:#ffffff;--ink:#0e1f16;--mut:#5a6d62;--acc:#0a8f50;--acc-ink:#ffffff;--warn:#c97800;--bad:#d23b3b;--line:#dbe6df;--sh:0 12px 32px rgba(10,60,35,.12);--blob1:#7fe0ae;--blob2:#ffd27a;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#08120d;--card:#12201a;--ink:#e9f4ee;--mut:#97aa9f;--acc:#2fcf86;--acc-ink:#04140b;--warn:#f0a63a;--bad:#ff6b6b;--line:#23382c;--sh:0 12px 32px rgba(0,0,0,.45);--blob1:#0f6b43;--blob2:#7a5410}}
+:root[data-theme="dark"]{--bg:#08120d;--card:#12201a;--ink:#e9f4ee;--mut:#97aa9f;--acc:#2fcf86;--acc-ink:#04140b;--warn:#f0a63a;--bad:#ff6b6b;--line:#23382c;--sh:0 12px 32px rgba(0,0,0,.45);--blob1:#0f6b43;--blob2:#7a5410}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,"Segoe UI",Roboto,sans-serif;overflow-x:hidden;line-height:1.45}
+.blob{position:fixed;border-radius:50%;filter:blur(70px);opacity:.55;z-index:-1;animation:float 14s ease-in-out infinite}
+.b1{width:340px;height:340px;background:var(--blob1);top:-80px;left:-80px}
+.b2{width:300px;height:300px;background:var(--blob2);bottom:-60px;right:-60px;animation-delay:-6s}
+@keyframes float{50%{transform:translate(40px,30px) scale(1.12)}}
+.wrap{max-width:980px;margin:auto;padding:16px 16px 56px}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;min-height:44px}
+.brand{font-weight:800;letter-spacing:.3px;font-size:18px}.brand span{color:var(--acc)}
+.ghost{background:transparent;border:1px solid var(--line);color:var(--ink);padding:8px 14px;border-radius:999px;font-size:14px;cursor:pointer}
+.ghost:hover{border-color:var(--acc)}
+.hero{text-align:center;padding:28px 0 26px;animation:up .7s both}
+.kick{display:inline-block;padding:6px 16px;border-radius:999px;background:var(--card);border:1px solid var(--line);color:var(--mut);font-size:14px;margin:0 0 14px;letter-spacing:.5px}
+h1{font-size:clamp(46px,13vw,92px);margin:0;line-height:1;font-weight:900;background:linear-gradient(90deg,var(--acc),#f2a900,var(--acc));background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 6s linear infinite}
+@keyframes shine{to{background-position:200% center}}
+.sub{max-width:520px;margin:14px auto 0;color:var(--mut);font-size:17px}
+.menu{display:grid;gap:18px;margin-top:22px}
+@media(min-width:760px){.menu{grid-template-columns:repeat(2,1fr)}}
+.role{display:flex;flex-direction:column;align-items:flex-start;gap:10px;text-align:left;padding:26px 22px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:22px;box-shadow:var(--sh);cursor:pointer;font:inherit;animation:up .7s both;animation-delay:var(--d);transition:transform .25s,border-color .25s}
+.role:hover{transform:translateY(-6px);border-color:var(--acc)}
+.role b{font-size:20px;display:block}.role small{color:var(--mut);font-size:14px;display:block;margin-top:4px}
+.role i{font-style:normal;color:var(--acc);font-weight:700;margin-top:auto;transition:transform .25s}.role:hover i{transform:translateX(6px)}
+.ic{display:grid;place-items:center;width:54px;height:54px;border-radius:16px;background:color-mix(in srgb,var(--acc) 16%,transparent);font-size:28px}
+.tip{text-align:center;color:var(--mut);margin-top:30px;font-size:14px}
+@keyframes up{from{opacity:0;transform:translateY(22px)}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--sh);animation:up .5s both}
+.narrow{max-width:420px;margin:30px auto}
+.card h2,.card h3{margin:0 0 12px}.mut{color:var(--mut)}
+label{display:block;font-size:14px;color:var(--mut);margin:12px 0}
+input,select,textarea{display:block;width:100%;margin-top:6px;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--acc);border-color:transparent}
+.btn{background:var(--acc);color:var(--acc-ink);border:0;padding:12px 20px;border-radius:12px;font:inherit;font-weight:700;cursor:pointer;transition:transform .15s,filter .2s}
+.btn:hover{filter:brightness(1.08);transform:translateY(-2px)}
+.btn.sm{padding:8px 14px;font-size:14px}.btn.red{background:var(--bad);color:#fff}.btn.out{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.err{color:var(--bad);min-height:20px;margin:4px 0}
+.shake{animation:shake .4s}@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.grid{display:grid;gap:18px;margin-top:14px}
+@media(min-width:760px){.grid.two{grid-template-columns:1fr 1fr}}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 0;border-top:1px solid var(--line)}
+.row:first-of-type{border-top:0}
+.pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:700;background:color-mix(in srgb,var(--acc) 18%,transparent);color:var(--acc)}
+.pill.w{background:color-mix(in srgb,var(--warn) 20%,transparent);color:var(--warn)}
+.pill.b{background:color-mix(in srgb,var(--bad) 18%,transparent);color:var(--bad)}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.track{height:10px;border-radius:999px;background:var(--line);overflow:hidden;margin:8px 0 4px;width:100%}
+.fill{height:100%;border-radius:999px;background:var(--acc);animation:grow 1s ease-out}
+.fill.low{background:var(--bad)}@keyframes grow{from{width:0}}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0}
+.stat{flex:1;min-width:130px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px}
+.stat b{font-size:28px;display:block}
+.think{text-align:center;padding:30px 10px}
+.dots span{display:inline-block;width:12px;height:12px;margin:0 4px;border-radius:50%;background:var(--acc);animation:dot 1s infinite}
+.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
+@keyframes dot{50%{transform:translateY(-12px);opacity:.4}}
+.note{border-left:4px solid var(--acc);background:color-mix(in srgb,var(--acc) 10%,transparent);padding:12px 14px;border-radius:10px;margin:12px 0;animation:up .4s both}
+.note.w{border-color:var(--warn);background:color-mix(in srgb,var(--warn) 12%,transparent)}
+.empty{color:var(--mut);padding:8px 0}
+#toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translate(-50%,120px);background:var(--ink);color:var(--bg);padding:12px 20px;border-radius:999px;font-size:14px;transition:transform .4s;z-index:9;max-width:90%;text-align:center}
+#toast.on{transform:translate(-50%,0)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.chip{display:inline-flex;align-items:center;margin:0;padding:6px 10px;border:1px solid var(--line);border-radius:999px;font-size:14px;color:var(--ink)}
+.chip input{display:inline;width:auto;margin:0 6px 0 0}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.tile{display:grid;place-items:center;align-content:center;gap:4px;height:130px;border-radius:16px;background:linear-gradient(135deg,color-mix(in srgb,var(--acc) 25%,var(--card)),var(--card));border:1px solid var(--line);font-size:42px;animation:pulse 2.5s infinite}
+.tile small{font-size:13px;color:var(--mut)}@keyframes pulse{50%{box-shadow:0 0 0 8px color-mix(in srgb,var(--acc) 15%,transparent)}}
+.chat{height:240px;overflow-y:auto;border:1px solid var(--line);border-radius:14px;padding:10px;margin:12px 0;background:var(--bg)}
+.msg{max-width:80%;margin:6px 0;padding:8px 12px;border-radius:14px;background:var(--card);border:1px solid var(--line)}.msg.me{margin-left:auto;background:var(--acc);color:var(--acc-ink)}
+.chatf{display:flex;gap:8px}.chatf input{margin:0}a.btn{display:inline-block;text-decoration:none}audio{max-width:100%;margin-top:6px}
+.nav{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:space-around;background:var(--card);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));z-index:8;box-shadow:0 -6px 20px rgba(0,0,0,.08)}
+.nav button{flex:1;max-width:120px;display:flex;flex-direction:column;align-items:center;gap:2px;border:0;background:transparent;color:var(--mut);font:inherit;font-size:12px;padding:6px 2px;border-radius:12px;cursor:pointer;transition:color .2s}
+.nav button span{font-size:22px;transition:transform .25s}.nav button.on{color:var(--acc);font-weight:700}.nav button.on span{transform:translateY(-3px) scale(1.18)}
+.ghost.on{border-color:var(--acc);color:var(--acc);font-weight:700}
+.chips .ghost{padding:10px 14px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="blob b1"></div><div class="blob b2"></div>
+<div class="wrap"><div class="bar" id="bar"></div><div id="app"></div></div>
+<div id="toast"></div>
+<script>
+const S={user:null,nid:20,
+ appts:[{id:1,patient:'patient2',slot:'2026-10-20 09:00',type:'VIRTUAL',symptoms:'Persistent cough for five days',flag:false,status:'BOOKED',doc:1}],
+ rx:[{id:1,patient:'patient2',medicine:'Cough syrup',symptoms:'Persistent cough for five days',status:'PENDING',doc:1}],
+ stock:[{id:1,c:1,name:'Paracetamol',qty:200,use:15,lead:5},{id:2,c:1,name:'Amoxicillin',qty:40,use:8,lead:7},{id:3,c:1,name:'ORS sachets',qty:500,use:5,lead:3},{id:4,c:1,name:'Malaria test kits',qty:90,use:12,lead:6},{id:5,c:2,name:'Paracetamol',qty:60,use:9,lead:6},{id:6,c:2,name:'Oral rehydration salts',qty:300,use:6,lead:4}],
+ reqs:[],notes:[],chat:{},pend:null,room:null,accounts:[],pending:null,draft:{name:'',town:'',phone:'',staff:[]},
+ centers:[{id:1,name:'Chilenje Community Hospital',town:'Lusaka',phone:'+260 211 000 111',type:'Class A',lic:'DEMO-0001',exp:'2027-12-31',status:'APPROVED'},{id:2,name:'Copperbelt Health Centre',town:'Kitwe',phone:'+260 212 000 222',type:'Class B',lic:'DEMO-0002',exp:'2027-12-31',status:'APPROVED'}],
+ docs:[{id:1,c:1,name:'Dr. Mulenga Phiri',role:'General practitioner',user:'doctor1',days:[1,2,3,4,5],from:'08:00',to:'16:00'},{id:2,c:1,name:'Dr. Chanda Zulu',role:'Paediatrician',user:'dr.chanda',days:[2,4,6],from:'09:00',to:'14:00'},{id:3,c:2,name:'Dr. Natasha Mwale',role:'Family physician',user:'dr.natasha',days:[1,2,3,4,5],from:'10:00',to:'18:00'}]};
+const R={
+ patient:{ic:'❤️',t:'Umwewo for patients',d:'Book visits, start a virtual checkup and get your prescriptions.',u:'patient1'},
+ doctor:{ic:'🩺',t:'Umwewo for doctors',d:'Review AI-suggested prescriptions and manage appointments.',u:'doctor1'},
+ inventory:{ic:'📦',t:'Umwewo for inventory staff',d:'Watch stock levels and approve AI restock requests.',u:'stock1'},
+ center:{ic:'🏥',t:'Umwewo for medical centers',d:'Register your hospital and manage your doctors and inventory staff.',u:'manager1'},
+ admin:{ic:'🛡️',t:'Umwewo verification team',d:'Check licences.',u:'admin1'}};
+let view='home',role=null,busy=false,last=null,scanning=false;
+const app=document.getElementById('app'),bar=document.getElementById('bar');
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(t.h);t.h=setTimeout(()=>t.classList.remove('on'),2600)}
+function go(v,r){view=v;if(r)role=r;if(v==='home')S.user=null;last=null;S.pend=null;draw();window.scrollTo(0,0)}
+function draw(){save();
+ bar.innerHTML='<div class="brand">Um<span>wewo</span></div>'+(view==='home'?'':'<button class="ghost" onclick="go(\'home\')">'+(S.user?'Log out':'← Menu')+'</button>');
+ app.innerHTML=view==='home'?home():view==='login'?login():view==='register'?register():view==='signup'?signup():view==='confirm'?confirmPage():view==='room'?room():shell();
+}
+function home(){return `<section class="hero"><p class="kick">Welcome</p><h1>Umwewo</h1><p class="sub">Care, appointments and medicine stock for hospitals in Zambia, all in one place.</p></section>
+<div class="menu">${Object.entries(R).filter(([k])=>k!=='admin').map(([k,r],i)=>`<button class="role" style="--d:${i*130+250}ms" onclick="go('login','${k}')"><span class="ic">${r.ic}</span><span><b>${r.t}</b><small>${r.d}</small></span><i>${k==='center'?'Log in or register →':'Log in →'}</i></button>`).join('')}</div>
+<p class="tip">Demo tip: book a visit as a patient, then log in as a doctor to approve it.<br><a href="#" style="color:var(--acc)" onclick="go('login','admin');return false">Verification team login</a> · <a href="#" style="color:var(--acc)" onclick="resetDemo();return false">Reset demo data</a></p>`}
+function login(){const r=R[role];return `<div class="card narrow" id="lg"><span class="ic">${r.ic}</span><h2 style="margin-top:12px">${r.t}</h2><p class="mut">Demo account is already filled in.</p>
+<form onsubmit="signin(event)"><label>Username<input id="u" value="${r.u}" autocomplete="off"></label><label>Password<input id="p" type="password" value="pass"></label><p class="err" id="err"></p><button class="btn" style="width:100%">Sign in</button></form>${role==='admin'?'':'<p class="mut" style="text-align:center;margin-top:14px">New here? <a href="#" style="color:var(--acc)" onclick="signupGo();return false">'+(role==='center'?'Register your center':'Create an account')+'</a></p>'}</div>`}
+function signin(e){e.preventDefault();const u=document.getElementById('u').value.trim(),p=document.getElementById('p').value;
+ if(role==='doctor'?S.docs.some(d=>d.user===u&&(d.pw||'pass')===p&&okC(ctr(d.c))):(p==='pass'&&u===R[role].u)){S.user=u;tab='dash';view='app';draw();toast('Welcome, '+u)}
+ else{document.getElementById('err').textContent='Wrong username or password, or your center is not verified yet.';const c=document.getElementById('lg');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake')}}
+
+/* ---------- AI stand-ins ---------- */
+function analyse(t,fs){t=t.toLowerCase();
+ const flag=['chest pain','bleeding','breathing','unconscious','severe'].some(w=>t.includes(w));
+ let med=null;if(/fever|headache/.test(t))med='Paracetamol 500mg';else if(/diarrh/.test(t))med='ORS sachets';else if(/infection/.test(t))med='Amoxicillin 500mg';else if(/cough/.test(t))med='Cough syrup';
+ let sev=flag?'urgent':/days|week|worse|persistent|vomit|fever/.test(t)?'moderate':'mild';const rank={mild:0,moderate:1,urgent:2},f=fs==='unsure'?'moderate':fs;if(f&&rank[f]>rank[sev])sev=f;return{flag:flag||sev==='urgent',med,sev,tip:TIPS[sev],unsure:fs==='unsure'}}
+
+/* ---------- patient ---------- */
+function patient(){
+ const a=S.appts.filter(x=>x.patient===S.user),r=S.rx.filter(x=>x.patient===S.user);
+ const form=busy?`<div class="think"><div class="dots"><span></span><span></span><span></span></div><p class="mut">AI is reading your symptoms…</p></div>`:
+ `<form onsubmit="book(event)"><label>Type<select id="ty"><option value="VIRTUAL">Virtual checkup (video)</option><option value="PHYSICAL">Physical visit</option></select></label>
+ <label>Preferred date and time<input id="sl" type="datetime-local" value="2026-10-20T09:00"></label>
+ <label>Describe your symptoms<textarea id="sy" rows="3" required placeholder="e.g. fever and headache since yesterday"></textarea></label><button class="btn">Submit</button></form>`;
+ const res=last&&!busy?`<div class="note ${last.flag?'w':''}"><b>${last.flag?'⚠️ We recommend seeing a doctor in person.':'✅ Checkup booked.'}</b><br>${last.flag?'A doctor will review your case and can turn this into a physical appointment.':'A doctor will see your virtual checkup at the chosen time.'}${last.med?'<br>A medicine suggestion was sent to a doctor for approval.':''}</div>`:'';
+ return `<h2>Hello, ${esc(S.user)} 👋</h2><div class="grid two"><div class="card"><h3>Book a visit or virtual checkup</h3>${form}${res}</div>
+ <div class="grid"><div class="card"><h3>My appointments</h3>${a.length?a.map(x=>`<div class="row"><span>${esc(x.slot.replace('T',' '))}<br><small class="mut">${esc(x.symptoms)}</small></span><span class="pill ${x.type==='PHYSICAL'?'w':''}">${x.type==='PHYSICAL'?'In person':'Virtual'}</span></div>`).join(''):'<p class="empty">No appointments yet.</p>'}</div>
+ <div class="card"><h3>My prescriptions</h3>${r.length?r.map(x=>`<div class="row"><b>${x.status==='APPROVED'?esc(x.medicine):'Waiting for doctor'}</b><span class="pill ${x.status==='APPROVED'?'':x.status==='REJECTED'?'b':'w'}">${x.status==='APPROVED'?'Approved':x.status==='REJECTED'?'Declined':'Pending'}</span></div>`).join(''):'<p class="empty">Nothing yet.</p>'}</div></div></div>`}
+function book(e){e.preventDefault();const sy=document.getElementById('sy').value,ty=document.getElementById('ty').value,sl=document.getElementById('sl').value;
+ busy=true;draw();setTimeout(()=>{const a=analyse(sy);
+  S.appts.push({id:S.nid++,patient:S.user,slot:sl,type:ty,symptoms:sy,flag:a.flag,status:'BOOKED'});
+  if(a.med)S.rx.push({id:S.nid++,patient:S.user,medicine:a.med,symptoms:sy,status:'PENDING'});
+  last=a;busy=false;draw()},1600)}
+
+/* ---------- doctor ---------- */
+function doctor(){
+ const p=S.rx.filter(x=>x.status==='PENDING');
+ return `<h2>Doctor section</h2><div class="stats"><div class="stat"><b>${p.length}</b>prescriptions to approve</div><div class="stat"><b>${S.appts.filter(x=>x.flag).length}</b>need an in-person visit</div></div>
+ <div class="grid two"><div class="card"><h3>AI-suggested prescriptions</h3>${p.length?p.map(x=>`<div class="row"><span><b>${esc(x.medicine)}</b><br><small class="mut">${esc(x.patient)}: ${esc(x.symptoms)}</small></span><span class="btns"><button class="btn sm" onclick="decide(${x.id},'APPROVED')">Approve</button><button class="btn sm red" onclick="decide(${x.id},'REJECTED')">Reject</button></span></div>`).join(''):'<p class="empty">All caught up ✅</p>'}</div>
+ <div class="card"><h3>Appointments</h3>${S.appts.map(x=>`<div class="row"><span>${esc(x.patient)}, ${esc(x.slot.replace('T',' '))}<br><small class="mut">${esc(x.symptoms)}</small><br>${x.flag?'<span class="pill b">AI: see in person</span> ':''}<span class="pill ${x.type==='PHYSICAL'?'w':''}">${x.type==='PHYSICAL'?'In person':'Virtual'}</span></span>${x.type==='VIRTUAL'?`<button class="btn sm out" onclick="phys(${x.id})">Make physical</button>`:''}</div>`).join('')}</div></div>`}
+function decide(id,s){S.rx.find(x=>x.id===id).status=s;draw();toast(s==='APPROVED'?'Approved. The patient can now see it.':'Rejected.')}
+function phys(id){S.appts.find(x=>x.id===id).type='PHYSICAL';draw();toast('Appointment is now in person.')}
+
+/* ---------- inventory ---------- */
+const days=i=>i.qty/Math.max(i.use,.1),low=i=>days(i)<=i.lead+7;
+function inventory(){
+ const wait=S.reqs.filter(x=>x.status==='AWAITING');
+ return `<h2>Inventory</h2><div class="stats"><div class="stat"><b>${S.stock.filter(low).length}</b>items running low</div><div class="stat"><b>${wait.length}</b>requests awaiting you</div></div>
+ <div class="grid two"><div class="card"><h3>Stock levels</h3>${S.stock.map(i=>`<div class="row" style="display:block"><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><b>${esc(i.name)}</b>${low(i)?'<span class="pill b">Shortage soon</span>':'<span class="pill">OK</span>'}</div>
+ <div class="track"><div class="fill ${low(i)?'low':''}" style="width:${Math.min(100,days(i)/30*100)}%"></div></div>
+ <small class="mut">${i.qty} left · about ${Math.round(days(i))} days · delivery takes ${i.lead} days</small> <button class="btn sm out" style="margin-left:6px" onclick="useStock(${i.id})">Log 10 used</button></div>`).join('')}
+ <button class="btn" style="margin-top:12px" onclick="check()" ${scanning?'disabled':''}>${scanning?'🤖 Scanning usage…':'🤖 Run AI shortage check'}</button></div>
+ <div class="card"><h3>Restock requests</h3>${S.reqs.length?S.reqs.map(x=>`<div class="row"><span><b>${x.qty} × ${esc(x.name)}</b><br><small class="mut">Drafted by AI agent</small></span>${x.status==='AWAITING'?`<button class="btn sm" onclick="send(${x.id})">Confirm and send</button>`:'<span class="pill">Sent to supplier</span>'}</div>`).join(''):'<p class="empty">No requests yet. Run the AI check.</p>'}
+ ${wait.length?'<div class="note w">Nothing is sent to suppliers until you confirm.</div>':''}</div></div>`}
+function check(){scanning=true;draw();setTimeout(()=>{let n=0;
+ S.stock.forEach(i=>{if(low(i)&&!S.reqs.some(r=>r.name===i.name&&r.status==='AWAITING')){S.reqs.push({id:S.nid++,name:i.name,qty:Math.ceil(i.use*30),status:'AWAITING'});n++}});
+ scanning=false;draw();toast(n?`AI drafted ${n} restock request${n>1?'s':''}`:'Stock looks healthy.')},1400)}
+function useStock(id){const i=S.stock.find(x=>x.id===id);i.qty=Math.max(0,i.qty-10);i.use=.7*i.use+.3*10;draw()}
+function send(id){S.reqs.find(x=>x.id===id).status='SENT';draw();toast('Request sent to supplier ✅')}
+/* ---------- v2: centers, doctor choice, chat room, voice notes (these replace the earlier patient, doctor and book) ---------- */
+const DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const ctr=id=>S.centers.find(c=>c.id===id),doc=id=>S.docs.find(d=>d.id===id);
+const think=m=>`<div class="think"><div class="dots"><span></span><span></span><span></span></div><p class="mut">${m}</p></div>`;
+let vn=null,rec=null;
+function avail(dt){if(!dt)return[];const d=new Date(dt),hm=dt.slice(11,16);
+ return S.docs.filter(x=>okC(ctr(x.c))&&!x.pending&&!x.removed&&x.days.includes(d.getDay())&&x.from<=hm&&hm<x.to&&!S.appts.some(a=>a.doc===x.id&&a.slot===dt))}
+const docCard=x=>`<b>${esc(x.name)}</b> <small class="mut">${esc(x.role)}</small><br><small class="mut">🏥 ${esc(ctr(x.c).name)}, ${esc(ctr(x.c).town)} · ${esc(ctr(x.c).phone)}</small>`;
+function prev(){const el=document.getElementById('pv'),s=document.getElementById('sl');if(!el||!s)return;const l=avail(s.value);
+ el.innerHTML=l.length?l.map(x=>`<div class="row"><span>${docCard(x)}</span></div>`).join(''):'<p class="empty">No doctors are free at this time. Try another time.</p>'}
+function patient(){
+ const me=S.user,a=S.appts.filter(x=>x.patient===me),r=S.rx.filter(x=>x.patient===me),n=S.notes.filter(x=>x.to===me);
+ if(S.pend)return pick();
+ const form=busy?think('AI is reading your symptoms…'):`<form onsubmit="book(event)"><label>Type<select id="ty"><option value="VIRTUAL">Virtual checkup (video)</option><option value="PHYSICAL">Physical visit</option></select></label>
+ <label>Date and time<input id="sl" type="datetime-local" value="2026-10-20T09:00" oninput="prev()"></label>
+ <label>Describe your symptoms<textarea id="sy" rows="3" required placeholder="Type here, or use the voice buttons"></textarea></label>
+ <label>How serious does it feel?<select id="fs"><option value="mild">Mild</option><option value="moderate">Moderate</option><option value="urgent">Serious</option><option value="unsure">Not sure</option></select></label>
+ <div class="btns"><button type="button" class="btn sm out" onclick="dictate()">🗣️ Speak symptoms</button><button type="button" class="btn sm out" id="rb" onclick="recToggle()">🎙️ Record voice note</button></div>
+ <div id="vn">${vn?`<audio controls src="${vn}"></audio>`:''}</div><br><button class="btn">Continue →</button></form>
+ <h3 style="margin-top:20px">Doctors available at this time</h3><div id="pv"></div>`;
+ setTimeout(prev,0);
+ return `<h2>Hello, ${esc(me)} 👋</h2><div class="grid two"><div class="card"><h3>Book a visit or virtual checkup</h3>${form}</div>
+ <div class="grid">${n.length?`<div class="card"><h3>🔔 Notifications</h3>${n.map(x=>`<div class="row"><span>${esc(x.text)}</span><span class="btns"><button class="btn sm out" aria-label="Read aloud" data-t="${esc(x.text)}" onclick="speak(this.dataset.t)">🔊</button><button class="btn sm" onclick="joinRoom(${x.appt})">Join chat room</button></span></div>`).join('')}</div>`:''}
+ <div class="card"><h3>My appointments</h3>${a.length?a.map(x=>`<div class="row"><span>${esc(x.slot.replace('T',' '))}<br><small class="mut">${x.doc?esc(doc(x.doc).name)+' · '+esc(ctr(doc(x.doc).c).name):''}</small></span><span class="btns"><span class="pill ${x.type==='PHYSICAL'?'w':''}">${x.type==='PHYSICAL'?'In person':'Virtual'}</span>${x.type==='VIRTUAL'&&x.doc?`<button class="btn sm" onclick="joinRoom(${x.id})">Chat room</button>`:''}</span></div>`).join(''):'<p class="empty">No appointments yet.</p>'}</div>
+ <div class="card"><h3>My prescriptions</h3>${r.length?r.map(x=>`<div class="row"><b>${x.status==='APPROVED'?esc(x.medicine):'Waiting for doctor'}</b><span class="pill ${x.status==='APPROVED'?'':x.status==='REJECTED'?'b':'w'}">${x.status==='APPROVED'?'Approved':x.status==='REJECTED'?'Declined':'Pending'}</span></div>`).join(''):'<p class="empty">Nothing yet.</p>'}</div></div></div>`}
+function book(e){e.preventDefault();const sy=document.getElementById('sy').value,ty=document.getElementById('ty').value,sl=document.getElementById('sl').value;
+ const fs=document.getElementById('fs').value;busy=true;draw();setTimeout(()=>{const a=analyse(sy,fs);S.pend={sy,ty,sl,vn,flag:a.flag,med:a.med,sev:a.sev,tip:a.tip,unsure:a.unsure};busy=false;draw()},1500)}
+function pick(){const p=S.pend,l=avail(p.sl);
+ return `<h2>Choose your doctor</h2><div class="note ${p.flag?'w':''}"><b>${{urgent:'⚠️ Your symptoms suggest an in-person visit.',moderate:'🟠 Moderate: see a doctor soon.',mild:'🟢 Mild: this looks manageable.'}[p.sev]}</b><br>${p.tip}${p.unsure?'<br><em>You said you are not sure, so we chose the careful option.</em>':''}<br><small>This is guidance, not a diagnosis. A doctor makes the final decision.</small><br>${esc(p.sl.replace('T',' '))} (${DAYS[new Date(p.sl).getDay()]}) · ${p.ty==='VIRTUAL'?'Virtual checkup':'Physical visit'}${p.med?'<br>A medicine suggestion will go to your doctor for approval.':''}</div>
+ <div class="card"><h3>Doctors available then</h3>${l.length?l.map(x=>`<div class="row"><span>${docCard(x)}<br><small class="mut">Works ${x.days.map(d=>DAYS[d]).join(', ')} · ${x.from}–${x.to}</small></span><button class="btn sm" onclick="pickDoc(${x.id})">Select - ${kw(feeOf(x))}</button></div>`).join(''):'<p class="empty">No one is free at that time.</p>'}
+ <button class="btn out sm" style="margin-top:12px" onclick="S.pend=null;draw()">← Change time</button>${p.sev==='mild'?' <button class="btn out sm" style="margin-top:12px" onclick="mildSkip()">No thanks, I will follow the advice</button>':''}</div>`}
+function bookDoc(id,pi){const p=S.pend,d=doc(id),t=p.sl.replace('T',' ');
+ const ap={id:S.nid++,patient:S.user,slot:p.sl,type:p.ty,symptoms:p.sy,flag:p.flag,sev:p.sev,status:'BOOKED',doc:id,vn:p.vn};S.appts.push(ap);S.pay.push(Object.assign({id:S.nid++,appt:ap.id,c:d.c,doc:id,patient:S.user,amount:feeOf(d)},pi));
+ if(p.med)S.rx.push({id:S.nid++,patient:S.user,medicine:p.med,symptoms:p.sy,status:'PENDING',doc:id});
+ if(p.ty==='VIRTUAL')S.notes.push({id:S.nid++,to:S.user,appt:ap.id,text:`Virtual checkup with ${d.name} at ${t}. Join the chat room when it starts.`},{id:S.nid++,to:d.user,appt:ap.id,text:`${S.user} has a virtual checkup with you at ${t}. You host the room.`});
+ S.pend=null;vn=null;tab='care';toast(`Booked with ${d.name}`+(p.ty==='VIRTUAL'?'. Notifications sent.':''));draw()}
+function doctor(){const me=S.docs.find(d=>d.user===S.user),c=ctr(me.c),
+ p=S.rx.filter(x=>x.status==='PENDING'&&x.doc===me.id),ap=S.appts.filter(x=>x.doc===me.id),n=S.notes.filter(x=>x.to===me.user);
+ return `<h2>${esc(me.name)}</h2><p class="mut">${esc(me.role)} · ${esc(c.name)}, ${esc(c.town)}</p>
+ <div class="stats"><div class="stat"><b>${p.length}</b>prescriptions to approve</div><div class="stat"><b>${ap.filter(x=>x.flag).length}</b>need an in-person visit</div></div>
+ ${n.length?`<div class="card" style="margin-bottom:18px"><h3>🔔 Notifications</h3>${n.map(x=>`<div class="row"><span>${esc(x.text)}</span><button class="btn sm" onclick="joinRoom(${x.appt})">Host chat room</button></div>`).join('')}</div>`:''}
+ <div class="grid two"><div class="card"><h3>AI-suggested prescriptions</h3>${p.length?p.map(x=>`<div class="row"><span><b>${esc(x.medicine)}</b><br><small class="mut">${esc(x.patient)}: ${esc(x.symptoms)}</small></span><span class="btns"><button class="btn sm" onclick="decide(${x.id},'APPROVED')">Approve</button><button class="btn sm red" onclick="decide(${x.id},'REJECTED')">Reject</button></span></div>`).join(''):'<p class="empty">All caught up ✅</p>'}</div>
+ <div class="card"><h3>My appointments</h3>${ap.length?ap.map(x=>`<div class="row"><span>${esc(x.patient)}, ${esc(x.slot.replace('T',' '))}<br><small class="mut">${esc(x.symptoms)}</small><br>${x.flag?'<span class="pill b">AI: see in person</span> ':'<span class="pill '+(x.sev==='moderate'?'w':'')+'">AI: '+(x.sev||'mild')+'</span> '}<span class="pill ${x.type==='PHYSICAL'?'w':''}">${x.type==='PHYSICAL'?'In person':'Virtual'}</span>${x.vn?`<br><audio controls src="${x.vn}"></audio>`:''}</span><span class="btns">${x.type==='VIRTUAL'?`<button class="btn sm" onclick="joinRoom(${x.id})">Host room</button><button class="btn sm out" onclick="phys(${x.id})">Make physical</button>`:''}</span></div>`).join(''):'<p class="empty">No appointments yet.</p>'}</div></div>`}
+/* chat room */
+function joinRoom(id){S.room=id;S.chat[id]=S.chat[id]||[];view='room';draw();window.scrollTo(0,0)}
+function room(){const a=S.appts.find(x=>x.id===S.room),d=doc(a.doc),host=S.user===d.user,link='https://meet.jit.si/Umwewo-'+a.id+'-'+a.slot.replace(/\W/g,'');
+ return `<div class="card"><h2>💬 Chat room</h2><p class="mut">${esc(a.slot.replace('T',' '))} · ${esc(a.patient)} with ${esc(d.name)} (host) · ${esc(ctr(d.c).name)}</p>
+ <div class="tiles"><div class="tile">🧑<small>${esc(a.patient)}</small></div><div class="tile">🩺<small>${esc(d.name)}</small></div></div>
+ <div class="btns"><a class="btn sm" href="${link}" target="_blank" rel="noopener">${host?'Start and host video meeting':'Join video meeting'}</a><button class="btn sm out" onclick="go('app')">Leave room</button></div>
+ <div class="chat" id="ch">${a.vn?`<div class="msg"><small>Voice note from ${esc(a.patient)}</small><br><audio controls src="${a.vn}"></audio></div>`:''}${S.chat[a.id].map(m=>`<div class="msg ${m.from===S.user?'me':''}"><small>${esc(m.from)}</small><br>${esc(m.t)}</div>`).join('')||'<p class="empty">Say hello 👋</p>'}</div>
+ <form class="chatf" onsubmit="say(event)"><input id="mt" placeholder="Type a message" autocomplete="off"><button class="btn">Send</button></form></div>`}
+function say(e){e.preventDefault();const t=document.getElementById('mt').value.trim();if(!t)return;S.chat[S.room].push({from:S.user,t});draw();const c=document.getElementById('ch');c.scrollTop=c.scrollHeight}
+/* register medical center */
+function register(){const D=S.draft;
+ return `<div class="card narrow" style="max-width:640px"><span class="ic">🏥</span><h2 style="margin-top:12px">Register a licensed medical center</h2><p class="mut">Only facilities licensed by the Health Professions Council of Zambia (HPCZ) can join. Our team checks every application before patients can see it.</p>
+ <label>Center name<input value="${esc(D.name)}" oninput="S.draft.name=this.value"></label><label>Town or city<input value="${esc(D.town)}" oninput="S.draft.town=this.value"></label><label>Phone<input value="${esc(D.phone)}" oninput="S.draft.phone=this.value"></label>
+ <label>Facility class<select onchange="S.draft.type=this.value">${['A','B','C','D','E'].map(x=>`<option>Class ${x}</option>`).join('')}</select></label>
+ <label>HPCZ facility licence number<input value="${esc(D.lic||'')}" oninput="S.draft.lic=this.value" placeholder="As printed on your licence"></label>
+ <label>Licence expiry date<input type="date" value="${D.exp||''}" oninput="S.draft.exp=this.value"></label>
+ <label>Upload a photo or PDF of the licence<input type="file" accept="image/*,.pdf" onchange="S.draft.file=this.files[0]?URL.createObjectURL(this.files[0]):null"></label>
+ <label class="chip" style="border-radius:14px"><input type="checkbox" ${D.ok?'checked':''} onchange="S.draft.ok=this.checked">I confirm these details are true and the licence is valid</label>
+ <h3>Add medical staff</h3><label>Full name<input id="sn"></label><label>Role or specialty<input id="sr" placeholder="e.g. Surgeon, Nurse"></label>
+ <label>HPCZ registration number<input id="sh" placeholder="Practitioner number"></label>
+ <label>Username (they log in with this)<input id="su" autocomplete="off" placeholder="e.g. dr.banda"></label><label>Password<input id="sp" type="password" placeholder="Choose a password"></label>
+ <div class="chips">${DAYS.map((d,i)=>`<label class="chip"><input type="checkbox" class="sd" value="${i}" ${i>0&&i<6?'checked':''}>${d}</label>`).join('')}</div>
+ <div class="btns"><label style="flex:1">From<input id="sf" type="time" value="08:00"></label><label style="flex:1">To<input id="st" type="time" value="16:00"></label></div>
+ <button class="btn out sm" onclick="addStaff()">+ Add staff</button>
+ ${D.staff.map(s=>`<div class="row"><span><b>${esc(s.name)}</b> <small class="mut">${esc(s.role)}</small><br><small class="mut">${s.days.map(d=>DAYS[d]).join(', ')} · ${s.from}–${s.to}</small></span></div>`).join('')}
+ <br><button class="btn" style="width:100%" onclick="saveCenter()">Register center</button></div>
+ <h3 style="margin-top:28px">Verified centers</h3><div class="grid two">${S.centers.filter(okC).map(c=>`<div class="card"><b>${esc(c.name)}</b><br><small class="mut">${esc(c.town)} · ${esc(c.phone)}</small>${S.docs.filter(d=>d.c===c.id).map(d=>`<div class="row"><span>${esc(d.name)}<br><small class="mut">${esc(d.role)} · username: ${esc(d.user)}</small></span></div>`).join('')}</div>`).join('')}</div>`}
+function addStaff(){const name=document.getElementById('sn').value.trim();const user=document.getElementById('su').value.trim().toLowerCase().replace(/\s+/g,''),pw=document.getElementById('sp').value;if(!name)return toast('Enter the staff name first.');if(!user||!pw||!document.getElementById('sh').value.trim())return toast('Enter a username, password and HPCZ registration number.');if(S.docs.some(d=>d.user===user)||S.draft.staff.some(s=>s.user===user))return toast('That username is already taken.');
+ S.draft.staff.push({name,user,pw,hpcz:document.getElementById('sh').value.trim(),role:document.getElementById('sr').value.trim()||'Staff',days:[...document.querySelectorAll('.sd:checked')].map(x=>+x.value),from:document.getElementById('sf').value,to:document.getElementById('st').value});draw()}
+function saveCenter(){const D=S.draft;if(!D.name.trim())return toast('Enter the center name first.');const lic=(D.lic||'').trim().toUpperCase();
+ if(lic.length<5)return toast('Enter the HPCZ licence number.');if(S.centers.some(c=>c.lic===lic))return toast('That licence number is already registered.');
+ if(!D.exp||D.exp<new Date().toISOString().slice(0,10))return toast('The licence must not be expired.');
+ if(!D.file)return toast('Upload a photo or PDF of the licence.');if(!D.ok)return toast('Please tick the confirmation box.');if(!D.staff.length)return toast('Add at least one staff member.');const id=S.nid++;
+ S.centers.push({id,name:D.name,town:D.town,phone:D.phone,type:D.type||'Class A',lic,exp:D.exp,file:D.file,status:'PENDING'});
+ D.staff.forEach(s=>S.docs.push({...s,id:S.nid++,c:id}));
+ S.draft={name:'',town:'',phone:'',staff:[]};draw();toast('Application sent. Patients can book once the verification team approves it.')}
+/* voice notes and speech */
+async function recToggle(){if(rec&&rec.state==='recording'){rec.stop();return}
+ try{const st=await navigator.mediaDevices.getUserMedia({audio:true}),ch=[];rec=new MediaRecorder(st);rec.ondataavailable=e=>ch.push(e.data);
+  rec.onstop=()=>{st.getTracks().forEach(t=>t.stop());vn=URL.createObjectURL(new Blob(ch,{type:rec.mimeType}));document.getElementById('vn').innerHTML=`<audio controls src="${vn}"></audio>`;document.getElementById('rb').textContent='🎙️ Record again'};
+  rec.start();document.getElementById('rb').textContent='⏹ Stop recording'}catch(e){toast('Microphone is not available here. Allow it, or open the page in its own tab.')}}
+function dictate(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return toast('Speech typing is not supported in this browser.');
+ const r=new SR();r.onresult=e=>{const t=document.getElementById('sy');t.value=(t.value+' '+e.results[0][0].transcript).trim()};r.onerror=()=>toast('Could not hear you. Check microphone permission.');r.start();toast('Listening… speak now')}
+function speak(t){if(window.speechSynthesis){speechSynthesis.cancel();speechSynthesis.speak(new SpeechSynthesisUtterance(t))}}
+const TIPS={urgent:'Please be seen in person as soon as you can. If it feels like an emergency, go to the nearest hospital now.',moderate:'Rest, drink plenty of fluids and see a doctor soon. A virtual checkup is a good start.',mild:'Rest, drink plenty of water and watch how you feel for a day or two. See a doctor if it gets worse or lasts more than a few days.'};
+function mildSkip(){S.pend=null;draw();toast('Take care. Come back if it gets worse.')}
+/* ---------- v3: bottom tabs, dashboards, accounts, statistics ---------- */
+let tab='dash';
+const TABS={patient:[['dash','🏠','Home'],['book','➕','Book'],['care','📋','My care'],['acct','👤','Account']],
+ doctor:[['dash','🏠','Home'],['visits','📅','Visits'],['rx','💊','Rx'],['stats','📊','Stats'],['acct','👤','Account']],
+ inventory:[['dash','🏠','Home'],['stock','📦','Stock'],['reqs','🧾','Requests'],['stats','📊','Stats'],['acct','👤','Account']]};
+function shell(){if(role==='patient'&&S.pend)tab='book';const me=S.docs.find(d=>d.user===S.user);
+ const sc={patient:{dash:pDash,book:pBook,care:pCare,acct},doctor:{dash:()=>dDash(me),visits:()=>dVisits(me),rx:()=>dRx(me),stats:()=>dStats(me),acct},inventory:{dash:iDash,stock:iStock,reqs:iReqs,stats:iStats,acct},admin:{dash:()=>aQueue()+aStaff(),all:aAll,acct},center:{dash:cDash,staff:cStaff,pays:cPays,acct}};
+ return (role==='inventory'?facBanner()+withCenter(sc[role][tab]):sc[role][tab]())+`<div style="height:72px"></div><nav class="nav">${TABS[role].map(([k,i,l])=>`<button class="${k===tab?'on':''}" onclick="tab='${k}';draw();window.scrollTo(0,0)"><span>${i}</span>${l}</button>`).join('')}</nav>`}
+const cnt=(l,f)=>l.filter(f).length,pill=(t,c='')=>`<span class="pill ${c}">${t}</span>`,gap='style="margin-top:16px"';
+const bars=(rows,max)=>rows.map(([l,v,c])=>`<div style="margin:10px 0"><div style="display:flex;justify-content:space-between"><span>${esc(l)}</span><b>${v}</b></div><div class="track"><div class="fill ${c||''}" style="width:${max?Math.min(100,v/max*100):0}%"></div></div></div>`).join('');
+const noteRows=(n,lbl)=>n.map(x=>`<div class="row"><span>${esc(x.text)}</span><span class="btns"><button class="btn sm out" aria-label="Read aloud" data-t="${esc(x.text)}" onclick="speak(this.dataset.t)">🔊</button><button class="btn sm" onclick="joinRoom(${x.appt})">${lbl}</button></span></div>`).join('');
+const apRows=a=>a.length?a.map(x=>`<div class="row"><span>${esc(x.slot.replace('T',' '))}<br><small class="mut">${x.doc?esc(doc(x.doc).name)+' · '+esc(ctr(doc(x.doc).c).name):''}</small></span><span class="btns">${pill(x.type==='PHYSICAL'?'In person':'Virtual',x.type==='PHYSICAL'?'w':'')}${payPill(x.id)}${x.type==='VIRTUAL'&&x.doc?`<button class="btn sm" onclick="joinRoom(${x.id})">Chat room</button>`:''}</span></div>`).join(''):'<p class="empty">No appointments yet.</p>';
+const rxRows=r=>r.length?r.map(x=>`<div class="row"><b>${x.status==='APPROVED'?esc(x.medicine):'Waiting for doctor'}</b>${pill(x.status==='APPROVED'?'Approved':x.status==='REJECTED'?'Declined':'Pending',x.status==='APPROVED'?'':x.status==='REJECTED'?'b':'w')}</div>`).join(''):'<p class="empty">Nothing yet.</p>';
+const dApRows=a=>a.length?a.map(x=>`<div class="row"><span>${esc(pn(x.patient))}, ${esc(x.slot.replace('T',' '))}<br><small class="mut">${esc(x.symptoms)}</small><br>${x.flag?pill('AI: see in person','b'):pill('AI: '+(x.sev||'mild'),x.sev==='moderate'?'w':'')} ${pill(x.type==='PHYSICAL'?'In person':'Virtual',x.type==='PHYSICAL'?'w':'')} ${payPill(x.id)}${x.vn?`<br><audio controls src="${x.vn}"></audio>`:''}</span><span class="btns">${x.type==='VIRTUAL'?`<button class="btn sm" onclick="joinRoom(${x.id})">Host room</button><button class="btn sm out" onclick="phys(${x.id})">Make physical</button>`:''}</span></div>`).join(''):'<p class="empty">No appointments yet.</p>';
+/* patient */
+function pDash(){const me=S.user,a=S.appts.filter(x=>x.patient===me),r=S.rx.filter(x=>x.patient===me),n=S.notes.filter(x=>x.to===me);
+ return `<h2>Hello, ${esc(myAcc()?myAcc().name:me)} 👋</h2><div class="stats"><div class="stat"><b>${a.length}</b>appointments</div><div class="stat"><b>${cnt(r,x=>x.status==='PENDING')}</b>prescriptions waiting</div><div class="stat"><b>${n.length}</b>notifications</div></div>
+ <div class="card"><h3>Need care?</h3><p class="mut">Describe your symptoms or record a voice note, then pick a doctor.</p><button class="btn" onclick="tab='book';draw()">Book a visit</button></div>
+ ${n.length?`<div class="card" ${gap}><h3>🔔 Notifications</h3>${noteRows(n,'Join chat room')}</div>`:''}
+ ${a.length?`<div class="card" ${gap}><h3>Latest appointment</h3>${apRows([a[a.length-1]])}</div>`:''}`}
+function pBook(){if(S.pend&&S.payFor)return payPage();if(S.pend)return pick();
+ const form=busy?think('AI is reading your symptoms…'):`<form onsubmit="book(event)"><label>Type<select id="ty"><option value="VIRTUAL">Virtual checkup (video)</option><option value="PHYSICAL">Physical visit</option></select></label>
+ <label>Date and time<input id="sl" type="datetime-local" value="2026-10-20T09:00" oninput="prev()"></label>
+ <label>Describe your symptoms<textarea id="sy" rows="3" required placeholder="Type here, or use the voice buttons"></textarea></label>
+ <label>How serious does it feel?<select id="fs"><option value="mild">Mild</option><option value="moderate">Moderate</option><option value="urgent">Serious</option><option value="unsure">Not sure</option></select></label>
+ <div class="btns"><button type="button" class="btn sm out" onclick="dictate()">🗣️ Speak symptoms</button><button type="button" class="btn sm out" id="rb" onclick="recToggle()">🎙️ Record voice note</button></div>
+ <div id="vn">${vn?`<audio controls src="${vn}"></audio>`:''}</div><br><button class="btn">Continue →</button></form>
+ <h3 style="margin-top:20px">Doctors available at this time</h3><div id="pv"></div>`;
+ setTimeout(prev,0);return `<h2>Book a visit</h2><div class="card">${form}</div>`}
+function pCare(){const me=S.user,n=S.notes.filter(x=>x.to===me);
+ return `<h2>My care</h2>${n.length?`<div class="card"><h3>🔔 Notifications</h3>${noteRows(n,'Join chat room')}</div>`:''}
+ <div class="card" ${gap}><h3>Appointments</h3>${apRows(S.appts.filter(x=>x.patient===me))}</div><div class="card" ${gap}><h3>Prescriptions</h3>${rxRows(S.rx.filter(x=>x.patient===me))}</div><div class="card" ${gap}><h3>Payments</h3>${payRows(me)}</div>`}
+/* doctor */
+function dDash(me){const c=ctr(me.c),p=S.rx.filter(x=>x.status==='PENDING'&&x.doc===me.id),ap=S.appts.filter(x=>x.doc===me.id),n=S.notes.filter(x=>x.to===me.user);
+ return `<h2>${esc(me.name)}</h2><p class="mut">${esc(me.role)} · ${esc(c.name)}, ${esc(c.town)}</p>
+ <div class="stats"><div class="stat"><b>${ap.length}</b>appointments</div><div class="stat"><b>${p.length}</b>to approve</div><div class="stat"><b>${cnt(ap,x=>x.flag)}</b>urgent</div></div>
+ ${n.length?`<div class="card" style="margin-bottom:16px"><h3>🔔 Notifications</h3>${noteRows(n,'Host chat room')}</div>`:''}
+ <div class="card"><h3>Next appointments</h3>${dApRows(ap.slice(0,3))}</div>`}
+function dVisits(me){return `<h2>Visits</h2><div class="card">${dApRows(S.appts.filter(x=>x.doc===me.id))}</div>`}
+function dRx(me){const l=S.rx.filter(x=>x.doc===me.id),p=l.filter(x=>x.status==='PENDING'),h=l.filter(x=>x.status!=='PENDING');
+ return `<h2>Prescriptions</h2><div class="card"><h3>Waiting for your approval</h3>${p.length?p.map(x=>`<div class="row"><span><b>${esc(x.medicine)}</b><br><small class="mut">${esc(pn(x.patient))}: ${esc(x.symptoms)}</small></span><span class="btns"><button class="btn sm" onclick="decide(${x.id},'APPROVED')">Approve</button><button class="btn sm red" onclick="decide(${x.id},'REJECTED')">Reject</button></span></div>`).join(''):'<p class="empty">All caught up ✅</p>'}</div>
+ <div class="card" ${gap}><h3>History</h3>${h.length?h.map(x=>`<div class="row"><span>${esc(x.medicine)}<br><small class="mut">${esc(x.patient)}</small></span>${pill(x.status==='APPROVED'?'Approved':'Rejected',x.status==='APPROVED'?'':'b')}</div>`).join(''):'<p class="empty">Nothing yet.</p>'}</div>`}
+function dStats(me){const ap=S.appts.filter(x=>x.doc===me.id),rx=S.rx.filter(x=>x.doc===me.id),n=ap.length||1,m=rx.length||1;
+ return `<h2>Statistics</h2><div class="stats"><div class="stat"><b>${ap.length}</b>appointments</div><div class="stat"><b>${Math.round(cnt(rx,x=>x.status==='APPROVED')/m*100)}%</b>prescriptions approved</div></div>
+ <div class="card"><h3>Appointments by type</h3>${bars([['Virtual',cnt(ap,x=>x.type==='VIRTUAL')],['In person',cnt(ap,x=>x.type==='PHYSICAL'),'low']],n)}</div>
+ <div class="card" ${gap}><h3>AI severity levels</h3>${bars([['Mild',cnt(ap,x=>!x.flag&&x.sev!=='moderate')],['Moderate',cnt(ap,x=>x.sev==='moderate'&&!x.flag)],['Urgent',cnt(ap,x=>x.flag),'low']],n)}</div>
+ <div class="card" ${gap}><h3>Prescriptions</h3>${bars([['Pending',cnt(rx,x=>x.status==='PENDING')],['Approved',cnt(rx,x=>x.status==='APPROVED')],['Rejected',cnt(rx,x=>x.status==='REJECTED'),'low']],m)}</div>`}
+/* inventory */
+const stockRows=()=>S.stock.map(i=>`<div class="row" style="display:block"><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><b>${esc(i.name)}</b>${low(i)?pill('Shortage soon','b'):pill('OK')}</div><div class="track"><div class="fill ${low(i)?'low':''}" style="width:${Math.min(100,days(i)/30*100)}%"></div></div><small class="mut">${i.qty} left · about ${Math.round(days(i))} days · delivery takes ${i.lead} days</small> <button class="btn sm out" style="margin-left:6px" onclick="useStock(${i.id})">Log 10 used</button></div>`).join('');
+const reqRows=l=>l.length?l.map(x=>`<div class="row"><span><b>${x.qty} × ${esc(x.name)}</b><br><small class="mut">Drafted by AI agent</small></span>${x.status==='AWAITING'?`<button class="btn sm" onclick="send(${x.id})">Confirm and send</button>`:pill('Sent to supplier')}</div>`).join(''):'<p class="empty">No requests yet. Run the AI check.</p>';
+const checkBtn=()=>`<button class="btn" style="margin-top:12px" onclick="check()" ${scanning?'disabled':''}>${scanning?'🤖 Scanning usage…':'🤖 Run AI shortage check'}</button>`;
+function iDash(){const lo=S.stock.filter(low),aw=S.reqs.filter(x=>x.status==='AWAITING');
+ return `<h2>Inventory</h2><div class="stats"><div class="stat"><b>${S.stock.length}</b>items tracked</div><div class="stat"><b>${lo.length}</b>running low</div><div class="stat"><b>${aw.length}</b>awaiting you</div></div>
+ <div class="card"><h3>Shortage alerts</h3>${lo.length?lo.map(i=>`<div class="row"><b>${esc(i.name)}</b>${pill('about '+Math.round(days(i))+' days left','b')}</div>`).join(''):'<p class="empty">Stock looks healthy ✅</p>'}${checkBtn()}</div>
+ ${aw.length?`<div class="card" ${gap}><h3>Please confirm</h3>${reqRows(aw)}<div class="note w">Nothing is sent to suppliers until you confirm.</div></div>`:''}`}
+function iStock(){return `<h2>Stock</h2><div class="card">${S.stock.length?stockRows():'<p class="empty">No items yet. Add your first item below.</p>'}${checkBtn()}</div>
+ <div class="card" ${gap}><h3>Add an item</h3><form onsubmit="addItem(event)"><label>Item name<input id="in" required></label><label>Quantity in stock<input id="iq" type="number" min="0" required></label><label>Used per day (average)<input id="iu" type="number" min="0" step="0.1" required></label><label>Days for a delivery to arrive<input id="il" type="number" min="1" required></label><button class="btn sm">Add item</button></form></div>`}
+function iReqs(){return `<h2>Restock requests</h2><div class="card">${reqRows(S.reqs)}</div>`}
+function iStats(){const mx=Math.max(...S.stock.map(days),30);
+ return `<h2>Statistics</h2><div class="stats"><div class="stat"><b>${S.stock.length?Math.round(Math.min(...S.stock.map(days))):'-'}</b>days until first shortage</div><div class="stat"><b>${S.stock.reduce((s,i)=>s+i.use,0).toFixed(0)}</b>units used per day</div></div>
+ <div class="card"><h3>Days of stock left</h3>${bars(S.stock.map(i=>[i.name,Math.round(days(i)),low(i)?'low':'']),mx)}</div>
+ <div class="card" ${gap}><h3>Daily usage</h3>${bars(S.stock.map(i=>[i.name,+i.use.toFixed(1)]),Math.max(...S.stock.map(i=>i.use)))}</div>
+ <div class="card" ${gap}><h3>Restock requests</h3>${bars([['Awaiting you',cnt(S.reqs,x=>x.status==='AWAITING'),'low'],['Sent',cnt(S.reqs,x=>x.status==='SENT')]],S.reqs.length||1)}</div>`}
+/* account */
+let big=false;
+function acct(){const d=S.docs.find(x=>x.user===S.user);
+ return `<h2>Account</h2><div class="card"><span class="ic">${R[role].ic}</span><h3 style="margin-top:12px">${esc(d?d.name:(myAcc()?myAcc().name:S.user))}</h3><p class="mut">${esc(R[role].t.replace('Umwewo for ',''))}${d?' · '+esc(ctr(d.c).name):''}</p>
+ <div class="row"><span>Username</span><b>${esc(S.user)}</b></div>${myAcc()?`<div class="row"><span>Email</span><b>${esc(myAcc().email)}</b></div>`:''}${d?`<div class="row"><span>Working days</span><b>${d.days.map(x=>DAYS[x]).join(', ')}</b></div><div class="row"><span>Hours</span><b>${d.from}–${d.to}</b></div>`:''}</div>
+ <div class="card" ${gap}><h3>Change password</h3><form onsubmit="chpw(event)"><label>New password<input id="np" type="password" required></label><button class="btn sm">Update</button></form></div>
+ <div class="card" ${gap}><h3>Settings</h3><div class="btns"><button class="btn out sm" onclick="bigText()">Larger text</button><button class="btn red sm" onclick="go('home')">Log out</button></div></div>`}
+function chpw(e){e.preventDefault();const d=S.docs.find(x=>x.user===S.user);if(d){d.pw=document.getElementById('np').value;toast('Password updated.')}else toast('Demo accounts keep the password "pass".');e.target.reset()}
+function bigText(){big=!big;document.body.style.zoom=big?1.2:1}
+/* ---------- v4: licence verification ---------- */
+const okC=c=>c.status==='APPROVED'&&c.exp>=new Date().toISOString().slice(0,10);
+TABS.admin=[['dash','🛡️','Review'],['all','🏥','Centers'],['acct','👤','Account']];
+function aQueue(){const q=S.centers.filter(c=>c.status==='PENDING');
+ return `<h2>Licence review</h2><p class="mut">Check each licence number against Health Professions Council of Zambia (HPCZ) records before approving.</p>
+ ${q.length?q.map(c=>`<div class="card" ${gap}><b>${esc(c.name)}</b> ${pill(esc(c.type))}<br><small class="mut">${esc(c.town)} · ${esc(c.phone)}</small>
+ <div class="row"><span>Licence number</span><b>${esc(c.lic)}</b></div><div class="row"><span>Expires</span><b>${esc(c.exp)}</b></div>
+ <div class="row"><span>Licence document</span><a href="${c.file}" target="_blank" rel="noopener" style="color:var(--acc)">Open file</a></div>
+ ${S.docs.filter(d=>d.c===c.id).map(d=>`<div class="row"><span>${esc(d.name)}<br><small class="mut">${esc(d.role)}</small></span><b>HPCZ ${esc(d.hpcz||'-')}</b></div>`).join('')}
+ <div class="btns" style="margin-top:12px"><button class="btn sm" onclick="verdict(${c.id},'APPROVED')">Approve</button><button class="btn sm red" onclick="verdict(${c.id},'REJECTED')">Reject</button></div></div>`).join(''):`<div class="card" ${gap}><p class="empty">No applications waiting ✅</p></div>`}`}
+function aAll(){return `<h2>All centers</h2><div class="card">${S.centers.map(c=>`<div class="row"><span><b>${esc(c.name)}</b><br><small class="mut">${esc(c.lic)} · expires ${esc(c.exp)}</small></span><span class="btns">${pill(okC(c)?'Verified':c.status==='APPROVED'?'Expired':c.status==='PENDING'?'Pending':c.status==='SUSPENDED'?'Suspended':'Rejected',okC(c)?'':c.status==='PENDING'?'w':'b')}${c.status==='APPROVED'?`<button class="btn sm out" onclick="verdict(${c.id},'SUSPENDED')">Suspend</button>`:c.status==='SUSPENDED'?`<button class="btn sm out" onclick="verdict(${c.id},'APPROVED')">Reinstate</button>`:''}</span></div>`).join('')}</div>`}
+function verdict(id,s){ctr(id).status=s;draw();toast('Center '+s.toLowerCase()+'.')}
+/* ---------- v5: own accounts, email confirmation (demo), saved on this device ---------- */
+const KEY='umwewo-v5',myAcc=()=>S.accounts.find(x=>x.user===S.user),pn=u=>{const a=S.accounts.find(x=>x.user===u);return a?a.name+' (@'+u+')':u};
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S,(k,v)=>k==='vn'||k==='file'?undefined:v))}catch(e){}}
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s){Object.assign(S,s);S.user=null;S.pend=null}}catch(e){}}
+function resetDemo(){try{localStorage.removeItem(KEY)}catch(e){}location.reload()}
+function signupGo(){role==='center'?go('register'):go('signup')}
+function fail(m){document.getElementById('err').textContent=m;const c=document.querySelector('.card');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake')}
+function signin(e){e.preventDefault();const u=document.getElementById('u').value.trim().toLowerCase(),p=document.getElementById('p').value,a=S.accounts.find(x=>x.user===u&&x.role===role&&x.pw===p);
+ if(a&&!a.confirmed){S.pending=u;view='confirm';draw();return}
+ if(a&&a.confirmed&&a.ok===false)return fail('Your account is waiting for approval by the verification team.');
+ const ok=role==='doctor'?S.docs.some(d=>d.user===u&&(d.pw||'pass')===p&&okC(ctr(d.c))&&!d.pending&&!d.removed):(a&&a.confirmed&&(role==='center'||!a.c||okC(ctr(a.c))))||(p==='pass'&&u===R[role].u);
+ if(ok){S.user=u;tab='dash';view='app';draw();toast('Welcome, '+(a?a.name:u))}else fail('Wrong username or password, or your center is not verified yet.')}
+function signup(){const r=R[role];return `<div class="card narrow"><span class="ic">${r.ic}</span><h2 style="margin-top:12px">Create your account</h2><p class="mut">${esc(r.t)}</p>
+ <form onsubmit="doSignup(event)"><label>Full name<input id="sn" required></label><label>Email<input id="se" type="email" required></label><label>Username<input id="su" required autocomplete="off"></label>${role==='patient'?'':staffFields()}<label>Password (6+ characters)<input id="sp" type="password" minlength="6" required></label><p class="err" id="err"></p><button class="btn" style="width:100%">Create account</button></form></div>`}
+function doSignup(e){e.preventDefault();const g=id=>document.getElementById(id).value.trim(),user=g('su').toLowerCase().replace(/\s+/g,''),email=g('se').toLowerCase();
+ if(S.accounts.some(a=>a.user===user)||S.docs.some(d=>d.user===user)||['patient1','patient2','stock1','admin1','doctor1'].includes(user))return fail('That username is taken.');
+ if(S.accounts.some(a=>a.email===email))return fail('That email already has an account.');
+ const staff=role!=='patient',c=staff?+(document.getElementById('sc')||{}).value:0,pw=document.getElementById('sp').value;
+ if(staff&&!c)return fail('There are no verified centers to join yet.');
+ if(role==='doctor'){const h=g('sh');if(!h)return fail('Enter your HPCZ registration number.');
+  S.docs.push({id:S.nid++,c,name:g('sn'),role:g('sr')||'Doctor',user,pw,hpcz:h,pending:true,days:[...document.querySelectorAll('.sd:checked')].map(x=>+x.value),from:g('sf'),to:g('st')})}
+ S.accounts.push({user,email,name:g('sn'),pw,role,c,ok:!staff,confirmed:false,code:String(Math.floor(100000+Math.random()*900000))});S.pending=user;view='confirm';draw()}
+function confirmPage(){const a=S.accounts.find(x=>x.user===S.pending);return `<div class="card narrow"><span class="ic">✉️</span><h2 style="margin-top:12px">Confirm your email</h2><p class="mut">The real app emails a 6-digit code to <b>${esc(a.email)}</b>.</p>
+ <div class="note w"><b>Demo only:</b> this page cannot send email, so your code is <b>${a.code}</b>.</div>
+ <form onsubmit="doConfirm(event)"><label>Enter the code<input id="cc" inputmode="numeric" maxlength="6" required></label><p class="err" id="err"></p><button class="btn" style="width:100%">Confirm</button></form></div>`}
+function doConfirm(e){e.preventDefault();const a=S.accounts.find(x=>x.user===S.pending);
+ if(document.getElementById('cc').value.trim()!==a.code)return fail('That code is not right.');
+ a.confirmed=true;if(a.ok===false){go('home');toast('Email confirmed. Your account now waits for approval by the verification team.');return}S.user=a.user;role=a.role;tab='dash';view='app';draw();toast('Email confirmed. Welcome, '+a.name+'!')}
+function chpw(e){e.preventDefault();const p=document.getElementById('np').value,t=S.docs.find(x=>x.user===S.user)||myAcc();if(t){t.pw=p;toast('Password updated.')}else toast('Demo accounts keep the password "pass".');e.target.reset()}
+/* ---------- v6: stock belongs to a facility; staff accounts join a verified center ---------- */
+const myC=()=>{const a=myAcc();return a&&a.c?a.c:1};
+function withCenter(fn){const a=S.stock,b=S.reqs,c=myC();S.stock=a.filter(i=>i.c===c);S.reqs=b.filter(r=>r.c===c);try{return fn()}finally{S.stock=a;S.reqs=b}}
+function facBanner(){const c=ctr(myC());return `<div class="note"><b>🏥 ${esc(c.name)}</b><br><small class="mut">${esc(c.town)} · ${esc(c.type||'')} · Licence ${esc(c.lic||'')}</small></div>`}
+function check(){scanning=true;draw();setTimeout(()=>{let n=0;const c=myC();
+ S.stock.filter(i=>i.c===c).forEach(i=>{if(low(i)&&!S.reqs.some(r=>r.c===c&&r.name===i.name&&r.status==='AWAITING')){S.reqs.push({id:S.nid++,c,name:i.name,qty:Math.ceil(i.use*30),status:'AWAITING'});n++}});
+ scanning=false;draw();toast(n?`AI drafted ${n} restock request${n>1?'s':''}`:'Stock looks healthy.')},1400)}
+function addItem(e){e.preventDefault();const g=id=>document.getElementById(id).value.trim();
+ S.stock.push({id:S.nid++,c:myC(),name:g('in'),qty:+g('iq'),use:+g('iu'),lead:+g('il')});draw();toast('Item added.')}
+const staffFields=()=>`<label>Medical center<select id="sc">${S.centers.filter(okC).map(c=>`<option value="${c.id}">${esc(c.name)}, ${esc(c.town)}</option>`).join('')}</select></label>`+(role==='doctor'?`<label>HPCZ registration number<input id="sh" required></label><label>Role or specialty<input id="sr" placeholder="e.g. General practitioner"></label><div class="chips">${DAYS.map((d,i)=>`<label class="chip"><input type="checkbox" class="sd" value="${i}" ${i>0&&i<6?'checked':''}>${d}</label>`).join('')}</div><div class="btns"><label style="flex:1">From<input id="sf" type="time" value="08:00"></label><label style="flex:1">To<input id="st" type="time" value="16:00"></label></div>`:'');
+function aStaff(){const q=S.accounts.filter(a=>a.ok===false&&a.confirmed);
+ return `<h2 style="margin-top:28px">Staff awaiting approval</h2>${q.length?q.map(a=>{const d=S.docs.find(x=>x.user===a.user);return `<div class="card" ${gap}><b>${esc(a.name)}</b> ${pill(a.role==='doctor'?'Doctor':'Inventory staff')}<br><small class="mut">${esc(a.email)} · ${esc(ctr(a.c).name)}</small>${d?`<div class="row"><span>HPCZ number</span><b>${esc(d.hpcz)}</b></div>`:''}<div class="btns" style="margin-top:12px"><button class="btn sm" onclick="staffVerdict('${a.user}',true)">Approve</button><button class="btn sm red" onclick="staffVerdict('${a.user}',false)">Reject</button></div></div>`}).join(''):`<div class="card" ${gap}><p class="empty">No staff waiting ✅</p></div>`}`}
+function staffVerdict(u,yes){const a=S.accounts.find(x=>x.user===u),d=S.docs.find(x=>x.user===u);
+ if(yes){a.ok=true;if(d)d.pending=false}else{S.accounts=S.accounts.filter(x=>x.user!==u);S.docs=S.docs.filter(x=>x.user!==u)}draw();toast(yes?'Staff approved.':'Staff rejected.')}
+function fix(){S.stock.forEach(i=>{i.c=i.c||1});S.reqs.forEach(r=>{r.c=r.c||1});if(!S.stock.some(i=>i.c===2))S.stock.push({id:S.nid++,c:2,name:'Paracetamol',qty:60,use:9,lead:6},{id:S.nid++,c:2,name:'Oral rehydration salts',qty:300,use:6,lead:4})}
+/* ---------- v7: medical center accounts that manage their own staff ---------- */
+TABS.center=[['dash','🏠','Home'],['staff','👥','Staff'],['acct','👤','Account']];
+const MGR={user:'manager1',email:'manager1@demo.zm',name:'Chilenje Admin',pw:'pass',role:'center',c:1,ok:true,confirmed:true};
+let kind='doctor';
+const today=()=>new Date().toISOString().slice(0,10),myCtr=()=>ctr(myAcc().c);
+const taken=u=>S.accounts.some(a=>a.user===u)||S.docs.some(d=>d.user===u)||['patient1','patient2','stock1','admin1','doctor1','manager1'].includes(u);
+function register(){const D=S.draft;
+ return `<div class="card narrow" style="max-width:640px"><span class="ic">🏥</span><h2 style="margin-top:12px">Register a licensed medical center</h2><p class="mut">Only facilities licensed by the Health Professions Council of Zambia (HPCZ) can join. Our team checks every application. After approval you add and remove your own staff from your center account.</p>
+ <label>Center name<input value="${esc(D.name)}" oninput="S.draft.name=this.value"></label><label>Town or city<input value="${esc(D.town)}" oninput="S.draft.town=this.value"></label><label>Phone<input value="${esc(D.phone)}" oninput="S.draft.phone=this.value"></label>
+ <label>Facility class<select onchange="S.draft.type=this.value">${['A','B','C','D','E'].map(x=>`<option>Class ${x}</option>`).join('')}</select></label>
+ <label>HPCZ facility licence number<input value="${esc(D.lic||'')}" oninput="S.draft.lic=this.value" placeholder="As printed on your licence"></label>
+ <label>Licence expiry date<input type="date" value="${D.exp||''}" oninput="S.draft.exp=this.value"></label>
+ <label>Upload a photo or PDF of the licence<input type="file" accept="image/*,.pdf" onchange="S.draft.file=this.files[0]?URL.createObjectURL(this.files[0]):null"></label>
+ <h3>Your center account</h3><label>Your full name<input id="mn"></label><label>Email<input id="me" type="email"></label><label>Username<input id="mu" autocomplete="off"></label><label>Password (6+ characters)<input id="mp" type="password"></label>
+ <label class="chip" style="border-radius:14px"><input type="checkbox" ${D.ok?'checked':''} onchange="S.draft.ok=this.checked">I confirm these details are true and the licence is valid</label>
+ <br><button class="btn" style="width:100%" onclick="saveCenter()">Register center</button></div>
+ <h3 style="margin-top:28px">Verified centers</h3><div class="grid two">${S.centers.filter(okC).map(c=>`<div class="card"><b>${esc(c.name)}</b><br><small class="mut">${esc(c.town)} · ${esc(c.type||'')} · ${esc(c.phone)}</small></div>`).join('')}</div>`}
+function saveCenter(){const D=S.draft,g=id=>document.getElementById(id).value.trim(),lic=(D.lic||'').trim().toUpperCase(),user=g('mu').toLowerCase().replace(/\s+/g,''),email=g('me').toLowerCase(),pw=document.getElementById('mp').value;
+ if(!D.name.trim())return toast('Enter the center name first.');
+ if(lic.length<5)return toast('Enter the HPCZ licence number.');if(S.centers.some(c=>c.lic===lic))return toast('That licence number is already registered.');
+ if(!D.exp||D.exp<today())return toast('The licence must not be expired.');if(!D.file)return toast('Upload a photo or PDF of the licence.');
+ if(!g('mn')||!email||!user||pw.length<6)return toast('Fill in your account details (password 6+ characters).');
+ if(taken(user))return toast('That username is taken.');if(S.accounts.some(a=>a.email===email))return toast('That email already has an account.');
+ if(!D.ok)return toast('Please tick the confirmation box.');
+ const id=S.nid++;S.centers.push({id,name:D.name,town:D.town,phone:D.phone,type:D.type||'Class A',lic,exp:D.exp,file:D.file,status:'PENDING'});
+ S.accounts.push({user,email,name:g('mn'),pw,role:'center',c:id,ok:true,confirmed:false,code:String(Math.floor(100000+Math.random()*900000))});
+ S.draft={name:'',town:'',phone:'',staff:[]};S.pending=user;role='center';view='confirm';draw()}
+function cDash(){const c=myCtr(),dr=S.docs.filter(d=>d.c===c.id&&!d.removed&&!d.pending),inv=S.accounts.filter(a=>a.role==='inventory'&&a.c===c.id),
+ st=okC(c)?pill('Verified'):c.status==='PENDING'?pill('Awaiting verification','w'):pill(c.status==='APPROVED'?'Licence expired':c.status.toLowerCase(),'b');
+ return `<h2>${esc(c.name)}</h2><p class="mut">${esc(c.town)} · ${esc(c.type||'')} · Licence ${esc(c.lic)} (expires ${esc(c.exp)})</p>${st}
+ ${okC(c)?'':'<div class="note w" style="margin-top:12px">Patients cannot see your center, and your staff cannot log in, until the verification team approves your licence.</div>'}
+ <div class="stats"><div class="stat"><b>${dr.length}</b>doctors</div><div class="stat"><b>${inv.length}</b>inventory staff</div><div class="stat"><b>${S.stock.filter(i=>i.c===c.id).length}</b>stock items</div><div class="stat"><b>${S.appts.filter(a=>a.doc&&doc(a.doc).c===c.id).length}</b>appointments</div><div class="stat"><b>${kw(S.pay.filter(p=>p.c===c.id&&p.status==='PAID').reduce((s,p)=>s+p.amount,0))}</b>received</div></div>
+ <div class="card"><h3>Quick actions</h3><button class="btn" onclick="tab='staff';draw()">Manage staff</button></div>`}
+function cStaff(){const c=myCtr(),dr=S.docs.filter(d=>d.c===c.id&&!d.removed),inv=S.accounts.filter(a=>a.role==='inventory'&&a.c===c.id);
+ return `<h2>Staff</h2><div class="card"><h3>Doctors</h3>${dr.length?dr.map(d=>`<div class="row"><span><b>${esc(d.name)}</b> ${d.pending?pill('Pending','w'):''}<br><small class="mut">${esc(d.role)} · ${d.days.map(x=>DAYS[x]).join(', ')} · ${d.from}–${d.to}<br>username: ${esc(d.user)}${d.hpcz?' · HPCZ '+esc(d.hpcz):''}</small></span><button class="btn sm red" onclick="rmDoc(${d.id})">Remove</button></div>`).join(''):'<p class="empty">No doctors yet.</p>'}</div>
+ <div class="card" ${gap}><h3>Inventory staff</h3>${inv.length?inv.map(a=>`<div class="row"><span><b>${esc(a.name)}</b><br><small class="mut">username: ${esc(a.user)}</small></span><button class="btn sm red" onclick="rmInv('${a.user}')">Remove</button></div>`).join(''):'<p class="empty">No inventory staff yet.</p>'}</div>
+ <div class="card" ${gap}><h3>Add staff</h3><form onsubmit="addStaffC(event)"><label>Staff type<select onchange="kind=this.value;draw()"><option value="doctor" ${kind==='doctor'?'selected':''}>Doctor</option><option value="inventory" ${kind==='inventory'?'selected':''}>Inventory staff</option></select></label>
+ <label>Full name<input id="kn" required></label><label>Username<input id="ku" required autocomplete="off"></label><label>Password (6+ characters)<input id="kp" type="password" minlength="6" required></label>
+ ${kind==='doctor'?`<label>HPCZ registration number<input id="kh"></label><label>Consultation fee (ZMW)<input id="kg" type="number" min="1" value="100"></label><label>Role or specialty<input id="kr" placeholder="e.g. Surgeon"></label><div class="chips">${DAYS.map((d,i)=>`<label class="chip"><input type="checkbox" class="sd" value="${i}" ${i>0&&i<6?'checked':''}>${d}</label>`).join('')}</div><div class="btns"><label style="flex:1">From<input id="kf" type="time" value="08:00"></label><label style="flex:1">To<input id="ke" type="time" value="16:00"></label></div>`:''}
+ <button class="btn">Add staff member</button></form></div>`}
+function addStaffC(e){e.preventDefault();const c=myAcc().c,g=id=>document.getElementById(id).value.trim(),user=g('ku').toLowerCase().replace(/\s+/g,''),pw=document.getElementById('kp').value;
+ if(taken(user))return toast('That username is taken.');
+ if(kind==='doctor'){if(!g('kh'))return toast('Enter the HPCZ registration number.');
+  S.docs.push({id:S.nid++,c,name:g('kn'),role:g('kr')||'Doctor',user,pw,hpcz:g('kh'),fee:+g('kg')||100,days:[...document.querySelectorAll('.sd:checked')].map(x=>+x.value),from:g('kf'),to:g('ke')})}
+ else S.accounts.push({user,email:'',name:g('kn'),pw,role:'inventory',c,ok:true,confirmed:true});
+ draw();toast('Staff member added. They log in with the username and password you set.')}
+function rmDoc(id){doc(id).removed=true;draw();toast('Doctor removed.')}
+function rmInv(u){S.accounts=S.accounts.filter(a=>a.user!==u);draw();toast('Staff member removed.')}
+load();fix();if(!S.accounts.some(a=>a.user==='manager1'))S.accounts.push(MGR);
+/* ---------- v8: payments ---------- */
+TABS.center=[['dash','🏠','Home'],['staff','👥','Staff'],['pays','💰','Payments'],['acct','👤','Account']];
+const METHODS=[['mtn','MTN Mobile Money','mm'],['airtel','Airtel Money','mm'],['zamtel','Zamtel Kwacha','mm'],['card','Visa or Mastercard','card'],['bank','Bank transfer','bank'],['cash','Pay at the facility','cash']];
+let method='mtn',payBusy=false;
+const feeOf=d=>d.fee||100,kw=n=>'K'+Number(n).toLocaleString('en-US');
+const payPill=id=>{const p=S.pay.find(z=>z.appt===id);return p?pill(p.status==='PAID'?'Paid '+kw(p.amount):'Payment pending '+kw(p.amount),p.status==='PAID'?'':'w'):''};
+const payRows=u=>{const l=S.pay.filter(p=>p.patient===u).slice().reverse();return l.length?l.map(p=>`<div class="row"><span><b>${kw(p.amount)}</b> - ${esc(p.method)}${p.info?' '+esc(p.info):''}<br><small class="mut">Receipt ${esc(p.ref)} - ${esc(doc(p.doc).name)}</small></span>${pill(p.status==='PAID'?'Paid':'Pending',p.status==='PAID'?'':'w')}</div>`).join(''):'<p class="empty">No payments yet.</p>'};
+function pickDoc(id){S.payFor=id;method='mtn';draw();window.scrollTo(0,0)}
+function payPage(){const d=doc(S.payFor),c=ctr(d.c),p=S.pend,m=METHODS.find(x=>x[0]===method),k=m[2];
+ if(payBusy)return think(k==='mm'?'Waiting for you to approve the payment on your phone…':'Processing your payment…');
+ const f={mm:'<label>Mobile money number<input id="pp" inputmode="tel" placeholder="e.g. 0971234567"></label><p class="mut">You will get a prompt on your phone to approve the payment.</p>',
+  card:'<label>Card number<input id="pc" inputmode="numeric" placeholder="1234 5678 9012 3456" autocomplete="off"></label><div class="btns"><label style="flex:1">Expiry (MM/YY)<input id="pe" placeholder="08/28"></label><label style="flex:1">CVV<input id="pv" inputmode="numeric" maxlength="4" type="password"></label></div><p class="mut">Demo only. Card details are never saved.</p>',
+  bank:'<p class="mut">Transfer the fee to the center bank account. The center confirms once the money arrives. Your request goes to the doctor now.</p>',
+  cash:'<p class="mut">Pay at the front desk when you arrive. Your request goes to the doctor now, and the center marks the payment received.</p>'}[k];
+ return `<h2>Payment</h2><div class="card"><h3>Your request</h3><div class="row"><span>Doctor</span><b>${esc(d.name)}</b></div><div class="row"><span>Hospital</span><b>${esc(c.name)}</b></div><div class="row"><span>When</span><b>${esc(p.sl.replace('T',' '))}</b></div><div class="row"><span>Visit</span><b>${p.ty==='VIRTUAL'?'Virtual checkup':'Physical visit'}</b></div><div class="row"><span>Consultation fee</span><b>${kw(feeOf(d))}</b></div></div>
+ <div class="card" ${gap}><h3>Choose how to pay</h3><div class="chips">${METHODS.map(x=>`<button type="button" class="ghost ${x[0]===method?'on':''}" onclick="method='${x[0]}';draw()">${x[1]}</button>`).join('')}</div>${f}
+ <div class="btns"><button class="btn" onclick="payNow()">${k==='cash'||k==='bank'?'Send request':'Pay '+kw(feeOf(d))+' and send request'}</button><button class="btn out" onclick="S.payFor=null;draw()">Back</button></div></div>`}
+function payNow(){const m=METHODS.find(x=>x[0]===method),k=m[2],g=id=>(document.getElementById(id)||{}).value||'';let info='';
+ if(k==='mm'){const ph=g('pp').replace(/\D/g,'');if(ph.length<9)return toast('Enter your mobile money number.');info='****'+ph.slice(-4)}
+ if(k==='card'){const n=g('pc').replace(/\D/g,'');if(n.length<13||!/^\d\d\/\d\d$/.test(g('pe').trim())||g('pv').length<3)return toast('Check the card number, expiry (MM/YY) and CVV.');info='ending '+n.slice(-4)}
+ const instant=k==='mm'||k==='card';payBusy=true;draw();
+ setTimeout(()=>{payBusy=false;const ref='UMW-'+Math.random().toString(36).slice(2,8).toUpperCase();
+  bookDoc(S.payFor,{method:m[1],info,status:instant?'PAID':'PENDING',ref,paidAt:new Date().toISOString().slice(0,16).replace('T',' ')});S.payFor=null;
+  toast(instant?'Payment received. Request sent to the doctor.':'Request sent. Payment stays pending until the center confirms it.')},instant?2000:600)}
+function cPays(){const c=myCtr(),l=S.pay.filter(p=>p.c===c.id).slice().reverse(),paid=l.filter(p=>p.status==='PAID'),pend=l.filter(p=>p.status==='PENDING'),sum=a=>a.reduce((s,p)=>s+p.amount,0),
+ by=METHODS.map(m=>[m[1],sum(paid.filter(p=>p.method===m[1]))]).filter(x=>x[1]);
+ return `<h2>Payments</h2><div class="stats"><div class="stat"><b>${kw(sum(paid))}</b>received</div><div class="stat"><b>${kw(sum(pend))}</b>pending</div><div class="stat"><b>${l.length}</b>payments</div></div>
+ <div class="card"><h3>Received by method</h3>${bars(by,Math.max(...by.map(x=>x[1]),1))||'<p class="empty">Nothing received yet.</p>'}</div>
+ <div class="card" ${gap}><h3>Transactions</h3>${l.length?l.map(p=>`<div class="row"><span><b>${kw(p.amount)}</b> - ${esc(p.method)}${p.info?' '+esc(p.info):''}<br><small class="mut">${esc(pn(p.patient))} - ${esc(doc(p.doc).name)} - ${esc(p.ref)}</small></span><span class="btns">${pill(p.status==='PAID'?'Paid':'Pending',p.status==='PAID'?'':'w')}${p.status==='PENDING'?`<button class="btn sm" onclick="markPaid(${p.id})">Mark received</button>`:''}</span></div>`).join(''):'<p class="empty">No payments yet.</p>'}</div>`}
+function markPaid(id){const p=S.pay.find(x=>x.id===id);p.status='PAID';draw();toast('Payment marked as received.')}
+S.pay=S.pay||[];S.docs.forEach(d=>{if(!d.fee)d.fee={1:150,2:200,3:120}[d.id]||100});
+draw();
+</script>
+</body>
+</html>
